@@ -3,6 +3,7 @@ import sys
 import json
 
 from functools import cmp_to_key as _CmpToKey
+from fnmatch import fnmatch
 
 import case
 
@@ -26,59 +27,54 @@ class TestLoader(object):
         os.chdir(driverPath)
         setUpFunc = getattr(__import__('setUp'),'setUp')
         tearDownFunc = getattr(__import__('tearDown'),'tearDown')
-        execFunc = __import__('exec')
-        return case.TestDriver(name, execFunc, setUpFunc=setUpFunc, tearDownFunc=tearDownFunc)
+        execModule = __import__('exec')
+        testFnNames = self.getTestFuncNames(execModule)
+        return case.TestDriver(name, execModule, testFnNames,setUpFunc=setUpFunc, tearDownFunc=tearDownFunc)
 
-    def loadTestsFromNamesOfADriver(self, names, dir):
-        print 'load tests from %s of %s' % (names, dir)
-        dir = os.path.normpath(dir)
-        driverName = dir.split('/')[-1].replace('ts_','')
-        os.chdir(os.path.join(dir,'conf'))
-        exex =  __import__('exec')
-        testFuncNames = self.getTestFuncNames(exex)
-        if not testFuncNames and hasattr(exex, 'runTest'):
-            testFuncNames = ['runTest']
-        for name in names:
-            for testFuncName in testFuncNames:
-                if testFuncName =='runTest':
-                    caseName = driverName+'#'+name.replace('tc_','')
-                else:
-                    caseName = driverName+'.'+testFuncName.replace('tc_','')+'#'+name.replace('tc_',+'')
-                testCase = case.TestCase()
-                testCase.driverName = driverName
-        return self.suiteClass()
-
-
-    def loadTestsFromFile(self, name, testFnNames=None):
-        f = file(name)
+    def loadTestsFromFile(self, f):
+        caseName = os.path.basename(f)
+        f = file(f)
         f = json.load(f)
         keys = f.keys()
         if 'driver' not in keys:
             print 'error'
         driverName = f['driver']
         driver = self.loadDriverFromName(driverName)
-        if not testFnNames:
-            testFnNames = self.getTestFuncNames(driverName)
-        tests = []
-        for testFnName in testFnNames:
-            testName = name+'#'+testFnName
-            test = case.TestCase(testName, driverName, testFnName)
-            tests.append(test)
-        print tests
-        return self.suiteClass(tests,{driverName:driver})
+        test = case.TestCase(caseName, driver)
+        return self.suiteClass([test])
 
     def loadTestsFromDir(self, dir):
         print 'load tests from dir:%s' % dir
-
-        return
+        if not self._math_path(os.path.basename(dir), 'ts_*'):
+            print 'error'
+            return
+        tests = list(self._find_tests(dir))
+        return self.suiteClass(tests)
 
     def loadTestsFromPlan(self, plan):
 
         return
+    def _find_tests(self,start_dir):
+        start_dir = os.path.abspath(start_dir)
+        start_dir = os.path.abspath(start_dir)
+        paths = os.listdir(start_dir)
+        for path in paths:
+            full_path = os.path.join(start_dir, path)
+            if os.path.isfile(full_path):
+                if not self._math_path(path, 'tc_*'):
+                    continue
+                yield self.loadTestsFromFile(full_path)
+            elif os.path.isdir(full_path):
+                if not self._math_path(path, 'ts_*'):
+                    continue
+                for test in self._find_tests(full_path):
+                    yield test
 
-    def getTestFuncNames(self, driver):
-        os.chdir(os.path.join(self.driverHomePath, driver))
-        module = __import__('exec')
+
+    def _math_path(self, path, pattern):
+        return fnmatch(path, pattern)
+
+    def getTestFuncNames(self, module):
         def isTestMethod(attrname, module=module,
                          prefix=self.testMethodPrefix):
             return attrname.startswith(prefix) and hasattr(getattr(module, attrname), '__call__')
@@ -88,10 +84,11 @@ class TestLoader(object):
         if self.sortTestMethodsUsing:
             testFnNames.sort(key=_CmpToKey(self.sortTestMethodsUsing))
         return testFnNames
-
+        
 defaultTestLoader = TestLoader()
-if __name__=="__main__":
-    suite = defaultTestLoader.loadTestsFromFile('tc_d2')
-    import result
 
+if __name__=="__main__":
+    #suite = defaultTestLoader.loadTestsFromFile('tc_d2')
+    suite = defaultTestLoader.loadTestsFromDir('ts_testts')
+    import result
     suite.run(result.TestResult())

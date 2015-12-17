@@ -1,9 +1,14 @@
+import sys
+import time
+
+import result
 class TestRunner(object):
-    def __init__(self, stream=sys.stdout,resultclass=None):
+    def __init__(self, stream=sys.stderr,resultclass=None):
         if resultclass is not None:
             self.resultclass = resultclass
         else:
-            self.resultclass = TextTestResult
+            self.resultclass = result.TestResult
+        self.stream = stream
 
     def _makeResult(self):
         return self.resultclass(stream=self.stream)
@@ -22,6 +27,9 @@ class TestRunner(object):
                 stopTestRun()
         stopTime = time.time()
         timeTaken = stopTime - startTime
+        result.startTime = startTime
+        result.stopTime = stopTime
+        result.timeTaken = timeTaken
         result.printResults()
         return result
 

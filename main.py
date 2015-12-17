@@ -1,7 +1,7 @@
 import sys
 import os
 import loader, runner
-
+import notice
 """
     Running tests:
 
@@ -19,6 +19,9 @@ class TestProgram(object):
         if argv is None:
             argv = sys.argv
         self.parseArgs(argv)
+        self.createTests()
+        self.runTests()
+
     def usageExit(self, msg=None):
         if msg:
             print msg
@@ -29,9 +32,12 @@ class TestProgram(object):
 
     def createTests(self):
         print 'create tests...'
+        self.tests = self.testLoader.loadTestsFromFile('tc_d2')
+        #self.tests = self.testLoader.loadTestsFromDir('ts_testts')
 
     def runTests(self):
         print 'print run tests...'
+        self.result = self.testRunner.run(self.tests)
 
 if __name__=="__main__":
-    TestProgram(argv=sys.argv)
+    TestProgram()
