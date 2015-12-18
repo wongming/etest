@@ -1,7 +1,8 @@
 import sys
-import time
+import time, datetime
 
 import result
+
 class TestRunner(object):
     def __init__(self, stream=sys.stderr,resultclass=None):
         if resultclass is not None:
@@ -15,7 +16,7 @@ class TestRunner(object):
 
     def run(self, test):
         result = self._makeResult()
-        startTime = time.time()
+        startTime = datetime.datetime.now()
         startTestRun = getattr(result, 'startTestRun', None)
         if startTestRun is not None:
             startTestRun()
@@ -25,11 +26,14 @@ class TestRunner(object):
             stopTestRun = getattr(result, 'stopTestRun', None)
             if stopTestRun is not None:
                 stopTestRun()
-        stopTime = time.time()
+        stopTime = datetime.datetime.now()
         timeTaken = stopTime - startTime
-        result.startTime = startTime
-        result.stopTime = stopTime
-        result.timeTaken = timeTaken
+        result.startTime = datetime.datetime.strftime(startTime, '%Y.%m.%d %H:%M:%S.%f');
+        result.stopTime = datetime.datetime.strftime(stopTime, '%Y.%m.%d %H:%M:%S.%f');
+        result.timeTaken = timeTaken.total_seconds()
+        print result.startTime
+        print result.stopTime
+        print result.timeTaken
         result.printResults()
         return result
 

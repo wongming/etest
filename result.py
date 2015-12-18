@@ -61,16 +61,19 @@ class TestResult(object):
         self.testsNo += 1
         self.stream.write("Success\n")
         self.successes.append((test, ''))
+        self.results.append([str(test), 'Passed'])
 
     def addFailure(self, test, err):
         self.testsNo += 1
         self.stream.write("Failure\n")
         self.failures.append((test, self._exc_info_to_string(err, test)))
+        self.results.append([str(test), 'Failed'])
 
     def addError(self, test, err):
         self.testsNo += 1
         self.stream.write("Error\n")
         self.failures.append((test, self._exc_info_to_string(err, test)))
+        self.results.append([str(test), 'Aborted'])
 
     def writeStream(self, stream):
         self.stream.write(stream)
@@ -85,7 +88,7 @@ class TestResult(object):
 
     def printResults(self):
         self.stream.write('\n')
-        self.stream.write("Ran %d test%s in %.3fs\n" %
+        self.stream.write("Ran %d test%s in %fs\n" %
                             (self.testsNo, self.testsNo != 1 and "s" or "", self.timeTaken))
         self.printResultList('Passed', self.successes)
         self.printResultList('Failed', self.failures)

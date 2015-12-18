@@ -32,12 +32,16 @@ class TestProgram(object):
 
     def createTests(self):
         print 'create tests...'
-        self.tests = self.testLoader.loadTestsFromFile('tc_d2')
-        #self.tests = self.testLoader.loadTestsFromDir('ts_testts')
+        #self.tests = self.testLoader.loadTestsFromFile('tc_d2')
+        self.tests = self.testLoader.loadTestsFromDir('ts_lay1')
 
     def runTests(self):
         print 'print run tests...'
         self.result = self.testRunner.run(self.tests)
+        self.result.description = 'SMDB Test Report from ATRS'
+        self.result.emailList = '378406534@qq.com'
+        import notice
+        notice.TestNotice().sendEmailNotice(self.result)
 
 if __name__=="__main__":
     TestProgram()

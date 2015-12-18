@@ -1,0 +1,46 @@
+<html>
+<head>
+
+<style type="text/css">
+  td {width: 10px}
+  #body {background-color: #e1edf7;border-style: solid; border-width: 2px;padding: 2px;}
+  #header {background-color: #1c4587;color: #d9d9d9;}
+  #mainhead {font-size:30px;padding: 15px 20px 5px 20px;}
+  #subhead {font-style: oblique;font-size: 18px;padding: 5px 20px 5px 20px;}
+  #content {padding: 20px;}
+  .name {color: #1c4587;padding: 2px;}
+  .value {background-color: #ffffff;text-indent:20px;padding: 3px;}
+  .Failed {color: #ff0000}
+  .Passed {color: #6aa84f}
+  .Aborted {color: #ffd966}
+  .error {border-width: 2px;}
+</style>
+
+</head>
+<body>
+  <div id="body">
+    <div id="header">
+      <div id="mainhead"><span style="color: #cc4125">ATRS  </span>Test Framework</div>
+      <div id="subhead">Test Report</div>
+    </div>
+    <div id="content">
+      <div class="name">Test Plan</div>
+      <div class="value">$planName</div>
+      <div class="name">Email List</div>
+      <div class="value">$emailList</div>
+      <div class="name">Duration</div>
+      <div class="value">$duration</div>
+      <div class="name">Statistics</div>
+      <div class="value">$statistics</div>
+      <div class="name">Test Results</div>
+      <div class="value">
+        <table>
+          $results
+        </table>
+      </div>
+      <div class="name">Test Log</div>
+      <div class="value">$log</div>
+    </div>
+  </div>
+</body
+</html>

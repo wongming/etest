@@ -31,8 +31,10 @@ class TestLoader(object):
         testFnNames = self.getTestFuncNames(execModule)
         return case.TestDriver(name, execModule, testFnNames,setUpFunc=setUpFunc, tearDownFunc=tearDownFunc)
 
-    def loadTestsFromFile(self, f):
+    def loadTestsFromFile(self, f, prefix=None):
         caseName = os.path.basename(f)
+        if prefix:
+            caseName = prefix +'.'+caseName
         f = file(f)
         f = json.load(f)
         keys = f.keys()
@@ -48,14 +50,14 @@ class TestLoader(object):
         if not self._math_path(os.path.basename(dir), 'ts_*'):
             print 'error'
             return
-        tests = list(self._find_tests(dir))
+        prefix = os.path.basename(dir)
+        tests = list(self._find_tests(dir,prefix=prefix))
         return self.suiteClass(tests)
 
     def loadTestsFromPlan(self, plan):
 
         return
-    def _find_tests(self,start_dir):
-        start_dir = os.path.abspath(start_dir)
+    def _find_tests(self, start_dir, prefix=None):
         start_dir = os.path.abspath(start_dir)
         paths = os.listdir(start_dir)
         for path in paths:
@@ -63,11 +65,15 @@ class TestLoader(object):
             if os.path.isfile(full_path):
                 if not self._math_path(path, 'tc_*'):
                     continue
-                yield self.loadTestsFromFile(full_path)
+                yield self.loadTestsFromFile(full_path, prefix=prefix)
             elif os.path.isdir(full_path):
                 if not self._math_path(path, 'ts_*'):
                     continue
-                for test in self._find_tests(full_path):
+                if prefix:
+                    prefix = prefix+'.'+path
+                else:
+                    prefix = path
+                for test in self._find_tests(full_path, prefix=prefix):
                     yield test
 
 
@@ -84,11 +90,11 @@ class TestLoader(object):
         if self.sortTestMethodsUsing:
             testFnNames.sort(key=_CmpToKey(self.sortTestMethodsUsing))
         return testFnNames
-        
+
 defaultTestLoader = TestLoader()
 
 if __name__=="__main__":
     #suite = defaultTestLoader.loadTestsFromFile('tc_d2')
-    suite = defaultTestLoader.loadTestsFromDir('ts_testts')
+    suite = defaultTestLoader.loadTestsFromDir('ts_lay1')
     import result
     suite.run(result.TestResult())

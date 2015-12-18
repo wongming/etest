@@ -51,9 +51,9 @@ class TestCase(object):
 
     def __str__(self):
         if self.currentTestMethod:
-            return '<%s#%s>' % (self._name, self.currentTestMethod)
+            return '%s#%s' % (self._name, self.currentTestMethod)
         else:
-            return '<%s>' % (self._name)
+            return '%s' % (self._name)
 
     def _addErrorList(self, result, error):
         for testMethod in self.testMethods:
