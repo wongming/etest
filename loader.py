@@ -9,18 +9,21 @@ import case
 
 sys.path.append('')
 
-"""
-    Examples:
-        stest -rt ts_xxx           - run tests from a driver
-        stest -rt ts_xxx#tm_xxx    - run tests from a test method
-        stest -rt ts_xxx           - run tests from a dir
-        stest -rp xxx.plan.json    - run plan
-"""
 class TestLoader(object):
     suiteClass = case.TestSuite
     testMethodPrefix = 'tc_'
     sortTestMethodsUsing = cmp
     driverHomePath = '/Users/wangming/workspace/etest/driverHomePath'
+
+    def listDrivers(self):
+        import StringIO
+        driver_list = StringIO.StringIO()
+        files = os.listdir(self.driverHomePath)
+        for f in files:
+            if '.' not in f:
+                driver_list.write('%s   ' % f)
+        driver_list.seek(0)
+        return driver_list.read()
 
     def loadDriverFromName(self,name):
         driverPath = os.path.join(self.driverHomePath, name)
@@ -55,8 +58,20 @@ class TestLoader(object):
         return self.suiteClass(tests)
 
     def loadTestsFromPlan(self, plan):
+        plan_json = json.load(file(plan))
+        case_list = plan_json["Case List"]
+        case_list = case_list.split(",")
+        tests = []
+        cases = []
+        for c in case_list:
+            cases.append(os.path.abspath(c))
+        for c in cases:
+            if os.path.isdir(c):
+                tests.append(self.loadTestsFromDir(c))
+            elif os.path.isfile(c):
+                tests.append(self.loadTestsFromFile(c))
+        return plan_json, self.suiteClass(tests)
 
-        return
     def _find_tests(self, start_dir, prefix=None):
         start_dir = os.path.abspath(start_dir)
         paths = os.listdir(start_dir)

@@ -7,7 +7,7 @@ class TestNotice(object):
         self.mail_host = 'smtp.qq.com'
         self.mail_user = "byonecry"
         self.mail_from = 'byonecry@qq.com'
-        self.mail_pwd = "xxx"
+        self.mail_pwd = "xxxx"
 
     def sendEmailNotice(self, result):
         template = file("/Users/wangming/workspace/etest/EmailTemplate.html").read()
