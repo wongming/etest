@@ -5,7 +5,7 @@ import json
 from functools import cmp_to_key as _CmpToKey
 from fnmatch import fnmatch
 
-import case
+from stest import case
 
 sys.path.append('')
 
@@ -13,7 +13,7 @@ class TestLoader(object):
     suiteClass = case.TestSuite
     testMethodPrefix = 'tc_'
     sortTestMethodsUsing = cmp
-    driverHomePath = '/Users/wangming/workspace/etest/driverHomePath'
+    driverHomePath = '/Users/wangming/workspace/atrs/workbench/driverHomePath'
 
     def listDrivers(self):
         import StringIO

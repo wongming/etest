@@ -1,6 +1,6 @@
 import sys
 
-import result
+from stest import result
 
 class TestDriver(object):
     def __init__(self, name, execModule, testMethods, setUpFunc=None, tearDownFunc=None):

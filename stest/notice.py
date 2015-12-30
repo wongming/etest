@@ -7,10 +7,10 @@ class TestNotice(object):
         self.mail_host = 'smtp.qq.com'
         self.mail_user = "byonecry"
         self.mail_from = 'byonecry@qq.com'
-        self.mail_pwd = "xxxx"
+        self.mail_pwd = "by!WANGMING!1115"
 
     def sendEmailNotice(self, result):
-        template = file("/Users/wangming/workspace/etest/EmailTemplate.html").read()
+        template = file("/Users/wangming/workspace/atrs/workbench/EmailTemplate.html").read()
         template = template.replace('$planName',result.description)
         template = template.replace('$emailList',result.emailList)
         template = template.replace('$duration','Total %s Seconds. ( %s -- %s )' % (result.timeTaken, result.startTime, result.stopTime))

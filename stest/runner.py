@@ -1,7 +1,7 @@
 import sys
 import time, datetime
 
-import result
+from stest import result
 
 class TestRunner(object):
     def __init__(self, stream=sys.stderr,resultclass=None):
