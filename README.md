@@ -1,7 +1,16 @@
-# 打包
-
+# stest
+## install/uninstall
+	#install
     python ./setup.py install --record install.txt
-
+    
+	#uninstall
     sudo cat install.txt | xargs rm -rf
-
-    #参考资料：http://yansu.org/2013/06/07/learn-python-setuptools-in-detail.html
+	
+	#run
+	stest
+	"stest -h" for help
+	contact byonecry@qq.com for more help
+	
+    #参考资料：
+    	https://docs.python.org/2/distutils/setupscript.html
+    	http://yansu.org/2013/06/07/learn-python-setuptools-in-detail.html
