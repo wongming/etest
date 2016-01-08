@@ -1,0 +1,3 @@
+[console_scripts]
+stest = stest:main
+

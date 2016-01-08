@@ -1,0 +1,9 @@
+[base]
+DriverPath = ~/.stest/driver
+EmailTemplatePath = ~/.stest/EmailTemplate.html
+TestMethodPrefix = tc_
+[notice]
+MailHost = 
+MailUser =
+MailFrom =
+MailPwd =
