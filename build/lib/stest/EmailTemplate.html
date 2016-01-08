@@ -13,8 +13,9 @@
   .Failed {color: #ff0000}
   .Passed {color: #6aa84f}
   .Aborted {color: #ffd966}
-  .error_info {text-indent:0em;padding-left: 20px;}
+  .error {border-width: 2px;}
 </style>
+
 </head>
 <body>
   <div id="body">
@@ -33,10 +34,12 @@
       <div class="value">$statistics</div>
       <div class="name">Test Results</div>
       <div class="value">
+        <table>
           $results
+        </table>
       </div>
       <div class="name">Test Log</div>
-      <div class="value"><pre>$log</pre></div>
+      <div class="value">$log</div>
     </div>
   </div>
 </body

@@ -14,6 +14,9 @@
     #参考资料：
     	https://docs.python.org/2/distutils/setupscript.html
     	http://yansu.org/2013/06/07/learn-python-setuptools-in-detail.html
+# cmd
+
+		
 # contact
 
 	email: byonecry@qq.com for more help
