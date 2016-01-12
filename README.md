@@ -1,7 +1,8 @@
 # stest
 ## install/uninstall
 	#install
-    python ./setup.py install --record install.txt
+		sudo python setup.py bdist_egg
+    sudo python ./setup.py install --record install.txt
 
 	#uninstall
     sudo cat install.txt | xargs rm -rf
@@ -16,7 +17,7 @@
     	http://yansu.org/2013/06/07/learn-python-setuptools-in-detail.html
 # cmd
 
-		
+
 # contact
 
 	email: byonecry@qq.com for more help

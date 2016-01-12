@@ -82,7 +82,7 @@ class TestCase(object):
                     raise
                 except:
                     result.writeStream(sys.exc_info())
-                    self._addErrorList(self, result, 'Driver:%s of %s set up error.' % (self.driver, self._name) )
+                    self._addErrorList(self, result, 'Driver:%s of %s set up error.\n' % (self.driver, self._name) )
                 else:
                     for testMethod in self.testMethods:
                         self.currentTestMethod = testMethod

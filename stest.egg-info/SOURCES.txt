@@ -2,7 +2,7 @@ setup.py
 stest/__init__.py
 stest/__main__.py
 stest/case.py
-stest/case2.py
+stest/core.py
 stest/loader.py
 stest/main.py
 stest/notice.py
