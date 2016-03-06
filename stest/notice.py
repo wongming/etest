@@ -19,6 +19,17 @@ class TestNotice(object):
             self.emailTemplatePath = os.path.expanduser(conf.get('base','EmailTemplatePath'))
 
     def sendEmailNotice(self, result):
+        template = self.generateHtmlReport(result)
+        msg = MIMEText(template, _subtype='html')
+        msg['Subject'] = result.description
+        msg['From'] = self.mail_from
+        msg['To'] = result.emailList
+        self.smtp.connect(self.mail_host)
+        self.smtp.login(self.mail_user, self.mail_pwd)
+        self.smtp.sendmail(self.mail_from, result.emailList.split(','), msg.as_string())
+        self.smtp.quit()
+
+    def generateHtmlReport(self, result):
         template = file(self.emailTemplatePath).read()
         template = template.replace('$planName',result.description)
         template = template.replace('$emailList',result.emailList)
@@ -37,11 +48,3 @@ class TestNotice(object):
             """
         results.append('</table>')
         template = template.replace('$results',''.join(results))
-        msg = MIMEText(template, _subtype='html')
-        msg['Subject'] = result.description
-        msg['From'] = self.mail_from
-        msg['To'] = result.emailList
-        self.smtp.connect(self.mail_host)
-        self.smtp.login(self.mail_user, self.mail_pwd)
-        self.smtp.sendmail(self.mail_from, result.emailList.split(','), msg.as_string())
-        self.smtp.quit()

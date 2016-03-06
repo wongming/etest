@@ -12,11 +12,13 @@ class Executor(object):
         self.target = target
         self.isPlan = isPlan
         self.createTests()
+        print self.tests
 
     def createTests(self):
         if self.isPlan:
             self.plan, self.tests = self.testLoader.loadTestsFromPlan(self.target)
         else:
+            print self.target
             if os.path.isdir(self.target):
                 self.tests = self.testLoader.loadTestsFromDir(self.target, projectName=self.target)
             if os.path.isfile(self.target):
