@@ -116,8 +116,8 @@ class TestProgram(object):
             self.result.emailList = self.plan['Email List']
             import notice
             notice.TestNotice().sendEmailNotice(self.result)
+            self.result.htmlReport = notice.TestNotice().generateHtmlReport(self.result)
         sys.exit(not self.result.wasSuccessful())
-
 
 run_exit = main = TestProgram
 

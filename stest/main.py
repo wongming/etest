@@ -115,8 +115,9 @@ class TestProgram(object):
             self.result.description = 'Test Report of [%s] from ATRS' % self.result.projectName
             self.result.emailList = self.plan['Email List']
             import notice
-            notice.TestNotice().sendEmailNotice(self.result)
-            self.result.htmlReport = notice.TestNotice().generateHtmlReport(self.result)
+            noticeTool = notice.TestNotice()
+            noticeTool.sendEmailNotice(self.result)
+            self.result.htmlReport = noticeTool.generateHtmlReport(self.result)
         sys.exit(not self.result.wasSuccessful())
 
 run_exit = main = TestProgram

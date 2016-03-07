@@ -31,8 +31,6 @@ try:
     email_template_file = os.path.join(conf_path, 'EmailTemplate.html')
     if not os.path.exists(email_template_file):
         shutil.copyfile('./stest/EmailTemplate.html',email_template_file)
-    #替换文件中的~
-    
 except:
     print 'Conf resource processed error'
     traceback.print_exc()

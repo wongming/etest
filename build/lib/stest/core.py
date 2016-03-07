@@ -12,6 +12,7 @@ class Executor(object):
         self.target = target
         self.isPlan = isPlan
         self.createTests()
+        print self.tests
 
     def createTests(self):
         if self.isPlan:
