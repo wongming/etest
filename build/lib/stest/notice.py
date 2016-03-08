@@ -48,3 +48,4 @@ class TestNotice(object):
             """
         results.append('</table>')
         template = template.replace('$results',''.join(results))
+        return template

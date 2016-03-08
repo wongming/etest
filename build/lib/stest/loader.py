@@ -31,7 +31,7 @@ class TestLoader(object):
         driver_list.seek(0)
         return driver_list.read()
 
-    def loadDriverFromName(self,name):
+    def loadDriverFromName(self, name):
         driverPath = os.path.join(self.driverPath, name)
         os.chdir(driverPath)
         setUpFunc = getattr(__import__('setUp'),'setUp')
