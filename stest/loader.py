@@ -34,8 +34,14 @@ class TestLoader(object):
     def loadDriverFromName(self, name):
         driverPath = os.path.join(self.driverPath, name)
         os.chdir(driverPath)
+        if sys.modules.has_key('setUp'):
+            del sys.modules['setUp']
         setUpFunc = getattr(__import__('setUp'),'setUp')
+        if sys.modules.has_key('tearDown'):
+            del sys.modules['tearDown']
         tearDownFunc = getattr(__import__('tearDown'),'tearDown')
+        if sys.modules.has_key('exec'):
+            del sys.modules['exec']
         execModule = __import__('exec')
         testFnNames = self.getTestFuncNames(execModule)
         return case.TestDriver(name, execModule, testFnNames,setUpFunc=setUpFunc, tearDownFunc=tearDownFunc)
@@ -52,6 +58,10 @@ class TestLoader(object):
         driverName = f['driver']
         driver = self.loadDriverFromName(driverName)
         test = case.TestCase(caseName, driver)
+        if 'data' in keys:
+            test.data = f['data']
+        else:
+            test.data = {}
         return self.suiteClass([test], projectName=projectName)
 
     def loadTestsFromDir(self, dir, projectName=None):

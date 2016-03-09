@@ -18,8 +18,9 @@ class TestNotice(object):
         if 'EmailTemplatePath' in conf.options('base'):
             self.emailTemplatePath = os.path.expanduser(conf.get('base','EmailTemplatePath'))
 
-    def sendEmailNotice(self, result):
-        template = self.generateHtmlReport(result)
+    def sendEmailNotice(self, result, template=None):
+        if template:
+            template = self.generateHtmlReport(result)
         msg = MIMEText(template, _subtype='html')
         msg['Subject'] = result.description
         msg['From'] = self.mail_from
